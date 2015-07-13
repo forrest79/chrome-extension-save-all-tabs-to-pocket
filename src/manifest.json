@@ -1,0 +1,31 @@
+{
+   "background": {
+      "page": "html/background.html"
+   },
+   "browser_action": {
+      "default_icon": {
+         "19": "img/browser-action-icon-19.png",
+         "38": "img/browser-action-icon-38.png"
+      },
+      "default_title": "__MSG_toolbarButtonTitle__"
+   },
+   "content_scripts": [ {
+      "js": [ "js/jquery-2.1.1.min.js", "js/shared.js", "js/login-inject.js" ],
+      "matches": [ "*://getpocket.com/extension_login_success" ]
+   }, {
+      "js": [ "js/jquery-2.1.1.min.js", "js/shared.js", "js/logout-inject.js" ],
+      "matches": [ "*://getpocket.com/login?e=4" ]
+   } ],
+   "default_locale": "en",
+   "description": "__MSG_extDescriptionGoogleChrome__",
+   "icons": {
+      "128": "img/icon-128.png",
+      "16": "img/icon-16.png",
+      "48": "img/icon-48.png"
+   },
+   "manifest_version": 2,
+   "name": "Save all tabs to Pocket",
+   "options_page": "html/options.html",
+   "permissions": [ "tabs", "cookies", "notifications", "https://readitlaterlist.com/", "http://*/*", "https://*/*" ],
+   "version": "1.0.0"
+}

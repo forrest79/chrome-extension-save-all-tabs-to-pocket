@@ -1,0 +1,47 @@
+.pkt_ext_container {
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	width: 21em;
+	min-height: 4em;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 3px;
+	background-color: rgb(240, 240, 240);
+	border: 2px solid rgb(255, 255, 255);
+	border-radius: 4px;
+	margin: 0 0.95em 1em 1em;
+	padding: 0;
+	z-index: 1000000;
+}
+
+.pkt_ext_initload h2 {
+	color: rgb(85, 85, 85);
+	font-size: 22px;
+	font-weight: bold;
+	letter-spacing: normal;
+	line-height: 1.4;
+	margin: 0 auto;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-top: 0.5em;
+	text-align: center;
+}
+
+.pkt_ext_close {
+	color: rgb(85, 85, 85);
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.pkt_ext_error_msg {
+	color: rgb(255, 15, 15);
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.pkt_ext_container_inactive {
+	visibility: hidden;
+	opacity: 0;
+}

@@ -1,0 +1,38 @@
+{
+   "background_save_url_error_message": {
+      "description": "",
+      "message": "Pocket could not save because „{$0}“"
+   },
+   "background_save_url_error_no_message": {
+      "description": "",
+      "message": "Pocket was unable to save the page. Please make sure that you are online, and try again."
+   },
+   "extDescriptionGoogleChrome": {
+      "description": "Extension Description for Chrome",
+      "message": "Save all opened tabs to Pocket. This is not official extension from Pocket team!"
+   },
+   "options_login_link": {
+      "description": "",
+      "message": "Click here to log in"
+   },
+   "options_login_title": {
+      "description": "",
+      "message": "Logged in as: "
+   },
+   "options_logout_link": {
+      "description": "",
+      "message": "logout"
+   },
+   "options_options_title": {
+      "description": "",
+      "message": "OPTIONS"
+   },
+   "options_title": {
+      "description": "",
+      "message": "Pocket for {$0} Options"
+   },
+   "toolbarButtonTitle": {
+      "description": "",
+      "message": "Save all tabs to Pocket"
+   }
+}
