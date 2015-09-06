@@ -1,8 +1,5 @@
 (function() {
 
-    var baseHost = "getpocket.com";
-    // var baseHost = "admin:s3krit@nick1.dev.readitlater.com";
-
     function checkForValidToken () {
         // Check if the user has still a valid token
         if (!navigator.onLine) { return; }
@@ -60,10 +57,7 @@
 
         (function initLinks() {
             $('#logout-link').on('click', function() {
-                // Logout the user from the web app and trigger logout of the
-                // extension
-                sendMessage({action: "openTab", url: "http://" + baseHost + "/lo", inBackground: false});
-
+                sendMessage({action: "logout"});
             });
 
             $('#login-link').on('click', function() {

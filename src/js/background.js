@@ -220,8 +220,6 @@ var backgroundPage = (function () {
             return;
         }
 
-        saving = true;
-
         // Login before, if not authorized
         if (!ril.isAuthorized()) {
             authentication.showLoginWindow(function() {
@@ -229,6 +227,8 @@ var backgroundPage = (function () {
             });
             return;
         }
+
+        saving = true;
 
         // Load the notification UI in the page to show the overlay
         loadNotificationUIIntoPage(tab, function() {

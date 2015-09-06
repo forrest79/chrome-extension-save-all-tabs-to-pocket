@@ -1,5 +1,3 @@
-/* VERSION 3.2*/
-// Use http://jscompress.com/ and copy output to r.js when ready to go to production
 //try{
 if (window.thePKT_BM) {
     window.thePKT_BM.save();
@@ -12,7 +10,6 @@ else {
     */
     var PKT_BM_OVERLAY = function () {
         var self = this;
-        // this.baseHost = "admin:s3krit@nick1.dev.readitlater.com";
 
         this.inited = false;
         this.active = false;
@@ -129,7 +126,7 @@ else {
                     if (self.delayedStateSaved) {
                         self.delayedStateSaved = false;
                     }
-                },10);
+                }, 10);
             }
             else {
                 self.active = false;

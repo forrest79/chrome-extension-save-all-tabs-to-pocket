@@ -5,7 +5,6 @@
 var ril = (function() {
 
     var baseURL = "https://getpocket.com/v3";
-    // var baseURL = "https://admin:s3krit@nick1.dev.readitlater.com/v3";
 
     /**
      * Auth keys for the API requests
@@ -70,23 +69,37 @@ var ril = (function() {
     function logout() {
         // Clear user login information
         setSetting("username", undefined);
-        setSetting("email", undefined);
-        setSetting("firstName", undefined);
-        setSetting("lastName", undefined);
         setSetting("oauth_token", undefined);
 
         // Clear legacy
-        setSetting("password", undefined);
         setSetting("token", undefined); // Clean old token value
+    }
 
-        // Clear heartbeat references
-        setSetting("guid", undefined);
-        setSetting("heartbeatTimestamp", undefined);
-        setSetting("alreadyLoggedIn", undefined);
+    function getRequestToken(callbacks) {
+        callbacks = callbacks || {};
 
-        setupHeartbeat(function(time) {
-            setSetting("guid", undefined);
-            setSetting("heartbeatTimestamp",undefined);
+        var redirectUri = '/extension-savealltabs-login-success';
+
+        apiRequest({
+            path: '/oauth/request ',
+            data: {
+                redirect_uri: redirectUri
+            },
+            success: function(data) {
+
+                var code = data["code"];
+                setSetting("token", code);
+
+                if (callbacks.success) { callbacks.success(code, redirectUri); }
+            },
+            error: function(data, textStatus, jqXHR) {
+                console.log("Get request token Error:");
+                console.log(data.error);
+
+                if (callbacks.error) {
+                    callbacks.error.apply(callbacks, Array.apply(null, arguments));
+                }
+            }
         });
     }
 
@@ -97,33 +110,20 @@ var ril = (function() {
      * @param  {Object} callbacks Optional object to get the successs or error
      *                            callback
      */
-    function login(info, callbacks) {
+    function login(callbacks) {
         callbacks = callbacks || {};
-
-        var self = this;
 
         apiRequest({
             path: '/oauth/authorize',
             data: {
-                guid: getSetting('guid'),
-                token: info.token,
-                user_id: info.userId,
-                account: "1",
-                grant_type: "extension"
+                code: getSetting('token')
             },
             success: function(data) {
 
-                var username = data["username"];
                 var accessToken = data["access_token"];
-                var account = data["account"];
-                var email = account["email"];
-                var firstName = account["first_name"] || "";
-                var lastName = account["last_name"] || "";
+                var username = data["username"];
 
                 setSetting("username", username);
-                setSetting("email", email);
-                setSetting("firstName", firstName);
-                setSetting("lastName", lastName);
                 setSetting("oauth_token", accessToken);
                 setSetting("token", undefined);
 
@@ -148,7 +148,6 @@ var ril = (function() {
      */
     function add(title, url, options) {
         var action = {
-            action: "add",
             url: url,
             title: title
         };
@@ -160,18 +159,12 @@ var ril = (function() {
      * removing of items via the API
      */
     function sendAction(action, options) {
-
-        // Options can have an 'actionInfo' object. This actionInfo object
-        // get passed through to the action object that we send to the API
-        if (typeof options.actionInfo !== 'undefined') {
-            action = $.extend(action, options.actionInfo);
-        }
-
         apiRequest({
-            path: "/send",
+            path: "/add",
             data: {
-                access_token: getSetting("oauth_token"),
-                actions: JSON.stringify([action])
+                url: action.url,
+                title: action.title,
+                access_token: getSetting("oauth_token")
             },
             success: function(data) {
                 if (options.success) options.success(data);
@@ -187,161 +180,14 @@ var ril = (function() {
     }
 
     /**
-     * Setup heartbeat
-     */
-    function setupHeartbeat(callback) {
-        var time = getSetting('heartbeatTimestamp');
-        var now = Date.now();
-        // time differential is just 10 to ensure we send it every time for testing, change to msInDay for later
-        var msInDay = 86400 * 1000;
-        if (typeof time == 'undefined' || ((now-time) > msInDay)) {
-            var guid = getSetting('guid');
-            if (typeof guid == 'undefined')
-            {
-                ril.getGuid(function(data)
-                {
-                    if (data.tests)
-                    {
-                        if (data.tests.extension_install_signup_v1)
-                        {
-                            setSetting("experimentVariant",data.tests.extension_install_signup_v1.option);
-                        }
-                    }
-                    if (data.guid)
-                    {
-                        setSetting('guid',data.guid);
-                        setupHeartbeat();
-                    }
-                    else 
-                    {
-                        setTimeout(setupHeartbeat,3600000);
-                    }
-                });
-                return;
-            }
-
-            chrome.windows.getAll({populate:true},function(windows) {
-                var tabcount = 0;
-                for (var i = 0; i < windows.length; i++)
-                {
-                    tabcount += windows[i].tabs.length;
-                }
-                
-                ril.sendHeartbeat(guid,tabcount,windows.length,function(success) {
-                    if (success)
-                    {
-                        setSetting('heartbeatTimestamp',now);
-                        if (callback)
-                        {
-                            callback(now);
-                        }
-                    }
-                    else
-                    {
-                        setTimeout(setupHeartbeat,3600000);
-                    }
-                });
-            });
-        }
-        else
-        {
-            // regardless of the scenario, for experiment purposes, check to see if guid exists, if not grab one
-            var guid = getSetting('guid');
-            if (typeof guid == 'undefined')
-            {
-                ril.getGuid(function(data)
-                {
-                    if (data.guid)
-                    {
-                        setSetting('guid',data.guid);
-                    }
-                    if (data.tests)
-                    {
-                        if (data.tests.extension_install_signup_v1)
-                        {
-                            setSetting("experimentVariant",data.tests.extension_install_signup_v1.option);
-                        }
-                    }
-                });
-            }
-        }
-    }
-
-    /**
-     * Send heartbeat detail
-     * @param {string}   guid     user guid
-     * @param {integer}  tabs     number of tabs open 
-     * @param {integer}  windows  number of windows open
-     * @param {function} callback return boolean on success status or not
-     */
-    function sendHeartbeat(guid,tabs,windows,callback) {
-        if (typeof guid == 'undefined' || !guid)
-        {
-            if (callback)
-            {
-                callback(false);
-            }
-            return;
-        }
-        apiRequest({
-            path: "/pv",
-            data: {
-                access_token: getSetting("oauth_token"),
-                guid: guid,
-                actions: JSON.stringify([{view: 'ext_heartbeat',cxt_t: tabs,cxt_w: windows}])
-            },
-            success: function(data) {
-                if (callback) { 
-                    callback(true); 
-                }
-            },
-            error: function(xhr) {
-                if (callback) { 
-                    callback(false); 
-                }
-            }
-        });
-    }
-
-    /**
-     * Get user guid
-     * @param {function} callback return guid, other data on success, false on not
-     */
-    function getGuid(callback) {
-        apiRequest({
-            path: "/guid",
-            data: {
-                abt: 1
-            },
-            success: function(data) {
-                if (callback) { 
-                    if (data.status) {
-                        callback(data);
-                    }
-                    else {
-                        callback(false); 
-                    }
-                }
-            },
-            error: function(xhr) {
-                if (callback) { 
-                    callback(false); 
-                }
-            }
-        });
-    }
-
-    /**
      * Public functions
      */
     return {
         isAuthorized: isAuthorized,
+        getRequestToken: getRequestToken,
         login: login,
         logout: logout,
         add: add,
-        setupHeartbeat: setupHeartbeat,
-        sendHeartbeat: sendHeartbeat,
-        getGuid: getGuid,
         isValidToken: isValidToken
     };
 }());

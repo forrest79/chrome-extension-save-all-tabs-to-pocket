@@ -3,9 +3,8 @@
  */
 var authentication = (function () {
 
-    var authURL = 'https://getpocket.com/signup?src=extension&route=/extension_login_success';
-    // var authURL = 'https://admin:s3krit@nick1.dev.readitlater.com/signup?src=extension&route=/extension_login_success';
     var afterLoginCallback;
+    var loginRedirectUri;
 
     // If we are not able to show the login popup from the toolbar
     // we show a login window. This is especially important for Chrome as
@@ -16,7 +15,12 @@ var authentication = (function () {
         afterLoginCallback = callback;
 
         // Open a new window for the login signup page
-        window.open(authURL);
+        ril.getRequestToken({
+            success: function(requestToken, redirectUri) {
+                loginRedirectUri = redirectUri;
+                window.open('https://getpocket.com/auth/authorize?request_token=' + requestToken + '&redirect_uri=' + redirectUri);
+            }
+        });
     };
 
     /**
@@ -29,8 +33,7 @@ var authentication = (function () {
         getAllTabs(function(tabs) {
             tabs.forEach(function(tab) {
                 var url = tab.url;
-                var windowId = tab.windowId;
-                if (url.indexOf("extension_login_success") !== -1) {
+                if (url.indexOf(loginRedirectUri) !== -1) {
                     chrome.tabs.remove(tab.id, function() {});
                 }
             });
@@ -65,8 +68,7 @@ var authentication = (function () {
         else if (request.action === "loginSuccessfull") {
             // Handle successfull login. This message is sent from the
             // login successfull page
-            var loginInformation = request.value;
-            ril.login(loginInformation, {
+            ril.login({
                 success: function() {
                     // Handle login success
                     onLoginSuccess();
