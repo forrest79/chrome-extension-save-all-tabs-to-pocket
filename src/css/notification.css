@@ -3,7 +3,7 @@
 	top: 10px;
 	right: 10px;
 	width: 21em;
-	min-height: 4em;
+	min-height: 3em;
 	-webkit-box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 3px;
 	background-color: rgb(240, 240, 240);
 	border: 2px solid rgb(255, 255, 255);
@@ -11,9 +11,11 @@
 	margin: 0 0.95em 1em 1em;
 	padding: 0;
 	z-index: 1000000;
+	font-family: 'Segoe UI', Tahoma, sans-serif;
+	text-align: center;
 }
 
-.pkt_ext_initload h2 {
+.pkt_ext_initload > div.pkt_title {
 	color: rgb(85, 85, 85);
 	font-size: 22px;
 	font-weight: bold;
@@ -23,19 +25,19 @@
 	padding-left: 1em;
 	padding-right: 1em;
 	padding-top: 0.5em;
-	text-align: center;
 }
 
-.pkt_ext_close {
+span.pkt_ext_close {
 	color: rgb(85, 85, 85);
 	position: absolute;
 	top: 5px;
 	right: 5px;
 	text-decoration: none;
 	font-weight: bold;
+	cursor: pointer;
 }
 
-.pkt_ext_error_msg {
+small.pkt_ext_error_msg {
 	color: rgb(255, 15, 15);
 	font-size: 13px;
 	font-weight: bold;

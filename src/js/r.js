@@ -57,11 +57,11 @@ else {
         };
         this.showStateAdd = function() {
             this.wrapper.removeClass('pkt_ext_container_inactive');
-            this.wrapper.find('h2').text(self.translations.add);
+            this.wrapper.find('.pkt_title').text(self.translations.add);
         };
         this.showStateSuccess = function() {
             this.wrapper.removeClass('pkt_ext_container_inactive');
-            this.wrapper.find('h2').text(self.translations.success);
+            this.wrapper.find('.pkt_title').text(self.translations.success);
             self.startCloseTimer();
         };
         this.showStateError = function() {
@@ -109,9 +109,9 @@ else {
                 container.setAttribute('aria-live','polite');
                 var extcontainerdetail = '\
                 <div class="pkt_ext_initload">\
-                    <a title="' + self.translations.close + '" class="pkt_ext_close" href="#">×</a>\
-                    <h2></h2>\
-                    <p class="pkt_ext_error_msg"></p>\
+                    <span title="' + self.translations.close + '" class="pkt_ext_close" href="#">×</span>\
+                    <div class="pkt_title"></div>\
+                    <small class="pkt_ext_error_msg"></small>\
                 </div>';
                 container.innerHTML = extcontainerdetail;
                 body.appendChild(container);
