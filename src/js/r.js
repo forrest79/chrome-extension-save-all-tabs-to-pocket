@@ -27,7 +27,7 @@ else {
         // TODO: allow the timer to be editable?
         this.autocloseTiming = 4000;
         this.initCloseWindowInput = function() {
-            self.wrapper.find('.pkt_ext_close').click(function(e) {
+            self.wrapper.find('.pkta_ext_close').click(function(e) {
                 e.preventDefault();
                 self.closePopup();
             });
@@ -44,7 +44,7 @@ else {
             }
             self.autocloseTimer = setTimeout(function() {
                 if (self.closeValid || self.preventCloseTimerCancel) {
-                    $('.pkt_ext_container').addClass('pkt_ext_container_inactive');
+                    $('.pkta_ext_container').addClass('pkta_ext_container_inactive');
                     self.preventCloseTimerCancel = false;
                 }
             }, settime);
@@ -56,21 +56,21 @@ else {
             clearTimeout(self.autocloseTimer);
         };
         this.showStateAdd = function() {
-            this.wrapper.removeClass('pkt_ext_container_inactive');
-            this.wrapper.find('.pkt_title').text(self.translations.add);
+            this.wrapper.removeClass('pkta_ext_container_inactive');
+            this.wrapper.find('.pkta_title').text(self.translations.add);
         };
         this.showStateSuccess = function() {
-            this.wrapper.removeClass('pkt_ext_container_inactive');
-            this.wrapper.find('.pkt_title').text(self.translations.success);
+            this.wrapper.removeClass('pkta_ext_container_inactive');
+            this.wrapper.find('.pkta_title').text(self.translations.success);
             self.startCloseTimer();
         };
         this.showStateError = function() {
-            this.wrapper.find('.pkt_ext_error_msg').text(self.translations.error);
+            this.wrapper.find('.pkt_exta_error_msg').text(self.translations.error);
         };
         this.closePopup = function() {
             self.stopCloseTimer();
-            this.wrapper.addClass('pkt_ext_container_inactive');
-            this.wrapper.find('.pkt_ext_error_msg').text();
+            this.wrapper.addClass('pkta_ext_container_inactive');
+            this.wrapper.find('.pkta_ext_error_msg').text();
         };
     };
 
@@ -99,23 +99,23 @@ else {
                 // add page saved element
                 var container;
 
-                var containerbaseclass = 'pkt_ext_container';
+                var containerbaseclass = 'pkta_ext_container';
                 if (supportsFlexbox()) {
-                    containerbaseclass = 'pkt_ext_container pkt_ext_container_flexbox';
+                    containerbaseclass = 'pkta_ext_container pkta_ext_container_flexbox';
                 }
                 container = document.createElement('div');
 
                 container.className = containerbaseclass;
                 container.setAttribute('aria-live','polite');
                 var extcontainerdetail = '\
-                <div class="pkt_ext_initload">\
-                    <span title="' + self.translations.close + '" class="pkt_ext_close" href="#">×</span>\
-                    <div class="pkt_title"></div>\
-                    <small class="pkt_ext_error_msg"></small>\
+                <div class="pkta_ext_initload">\
+                    <span title="' + self.translations.close + '" class="pkta_ext_close" href="#">×</span>\
+                    <div class="pkta_title"></div>\
+                    <small class="pkta_ext_error_msg"></small>\
                 </div>';
                 container.innerHTML = extcontainerdetail;
                 body.appendChild(container);
-                self.wrapper = $('.pkt_ext_container');
+                self.wrapper = $('.pkta_ext_container');
                 self.initCloseWindowInput();
                 self.initAutoCloseEvents();
 

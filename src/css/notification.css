@@ -1,4 +1,4 @@
-.pkt_ext_container {
+.pkta_ext_container {
 	position: fixed;
 	top: 10px;
 	right: 10px;
@@ -10,12 +10,12 @@
 	border-radius: 4px;
 	margin: 0 10px 10px 10px;
 	padding: 0;
-	z-index: 1000000;
+	z-index: 100000000;
 	font-family: 'Segoe UI', Tahoma, sans-serif;
 	text-align: center;
 }
 
-.pkt_ext_initload > div.pkt_title {
+.pkta_ext_initload > div.pkta_title {
 	color: rgb(85, 85, 85);
 	font-size: 22px;
 	font-weight: bold;
@@ -27,7 +27,7 @@
 	padding-top: 5px;
 }
 
-span.pkt_ext_close {
+span.pkta_ext_close {
 	color: rgb(85, 85, 85);
 	position: absolute;
 	top: 5px;
@@ -37,13 +37,13 @@ span.pkt_ext_close {
 	cursor: pointer;
 }
 
-small.pkt_ext_error_msg {
+small.pkta_ext_error_msg {
 	color: rgb(255, 15, 15);
 	font-size: 13px;
 	font-weight: bold;
 }
 
-.pkt_ext_container_inactive {
+.pkta_ext_container_inactive {
 	visibility: hidden;
 	opacity: 0;
 }
