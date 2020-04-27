@@ -1,4 +1,4 @@
-Save all tabs to Pocket (extension for Google Chrome) © Jakub Trmota, 2015 (http://forrest79.net)
+Save all tabs to Pocket (extension for Google Chrome) © Jakub Trmota, 2015 (https://forrest79.net)
 
 
 Save all opened tabs in Chrome to Pocket.
