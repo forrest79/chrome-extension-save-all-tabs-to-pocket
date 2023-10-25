@@ -1,3 +1,6 @@
+=== THIS REPOSITORY IS NO LONGER MAINTAINED ===
+
+
 Save all tabs to Pocket (extension for Google Chrome) © Jakub Trmota, 2015 (https://forrest79.net)
 
 
